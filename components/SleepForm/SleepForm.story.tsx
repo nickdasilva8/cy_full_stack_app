@@ -1,7 +1,7 @@
 import { SleepForm } from './SleepForm';
 
 export default {
-  title: 'Welcome',
+  title: 'Sleep Form',
 };
 
 export const Usage = () => <SleepForm />;

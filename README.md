@@ -1,4 +1,9 @@
-# Ct fullstack app
+# Cy fullstack app
+
+### Run locally:
+1 - `npm install`
+2 - `npm run dev`
+3 - follow terminal instructions to required port
 
 ## npm scripts
 

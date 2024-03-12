@@ -1,12 +1,13 @@
 import { render, screen } from '@/test-utils';
-import { Welcome } from './Header';
+import { Header } from './Header';
 
 describe('Welcome component', () => {
-  it('has correct Next.js theming section link', () => {
-    render(<Welcome />);
-    expect(screen.getByText('this guide')).toHaveAttribute(
-      'href',
-      'https://mantine.dev/guides/next/'
+  it('Welcome component implements composition properly', () => {
+    render(
+      <Header>
+        <h1>I&apos;m correctly rendered within the component</h1>
+      </Header>
     );
+    expect(screen.getByText("I'm correctly rendered within the component")).toBeInTheDocument();
   });
 });

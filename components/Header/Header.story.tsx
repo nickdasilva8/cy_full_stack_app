@@ -1,7 +1,11 @@
-import { Welcome } from './Header';
+import { Header } from './Header';
 
 export default {
-  title: 'Welcome',
+  title: 'Header',
 };
 
-export const Usage = () => <Welcome />;
+export const Usage = () => (
+  <Header>
+    <h1>I&apos;m correctly rendered within the component</h1>
+  </Header>
+);

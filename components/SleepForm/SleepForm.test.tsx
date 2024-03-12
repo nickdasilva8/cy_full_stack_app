@@ -4,9 +4,9 @@ import { SleepForm } from './SleepForm';
 describe('Welcome component', () => {
   it('has correct Next.js theming section link', () => {
     render(<SleepForm />);
-    expect(screen.getByText('this guide')).toHaveAttribute(
-      'href',
-      'https://mantine.dev/guides/next/'
-    );
+    expect(screen.getByText('name')).toBeInTheDocument();
+    expect(screen.getByText('Your gender')).toBeInTheDocument();
+    expect(screen.getByText('Hours slept')).toBeInTheDocument();
+    expect(screen.getByText('Submit')).toBeInTheDocument();
   });
 });
