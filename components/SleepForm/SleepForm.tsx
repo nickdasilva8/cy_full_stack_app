@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { TextInput, Button, Group, Box, Select, NumberInput, Text } from '@mantine/core';
+import { TextInput, Button, Group, Box, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import classes from './SleepForm.module.css';

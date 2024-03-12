@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=cy_local_db_user
+      - POSTGRES_PASSWORD=cy_local_db_pass
+      - POSTGRES_DB=cy_local_db
