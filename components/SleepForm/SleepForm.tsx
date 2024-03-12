@@ -18,6 +18,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       hoursSlept: '',
     },
 
+    // TODO:: use shared schema from Zod, which would allow for reuse of the schema in the backend
     validate: {
       name: (value) =>
         /^[A-Za-z\s]+$/.test(value) ? null : 'Name can only consistent of Letters and spaces',
@@ -42,8 +43,8 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
 
         <Select
           mt="md"
+          withAsterisk
           label="Your gender"
-          placeholder="Gender"
           // The Product team would be expected to have validated that these options are appropriate
           data={genderOptions}
           {...form.getInputProps('gender')}
@@ -51,8 +52,8 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
 
         <Select
           mt="md"
+          withAsterisk
           label="Hours slept"
-          placeholder="hours slept"
           data={hoursSleptOptions}
           {...form.getInputProps('hoursSlept')}
         />
