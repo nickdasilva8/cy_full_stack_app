@@ -15,7 +15,12 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
 
   // this list should retrieved from the database, but that feels out of scope for this example
-  const genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say'];
+  const genderOptions = [
+    { value: 'Male', label: 'Male' },
+    { value: 'Female', label: 'Female' },
+    { value: 'Other', label: 'Other' },
+    { value: 'Prefer_not_to_say', label: 'Prefer not to say' },
+  ];
 
   const form = useForm({
     name: 'sleep-form',
@@ -30,7 +35,8 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       // TODO:: make this trim the input, to eliminate leading and trailing whitespace
       name: (value) =>
         /^[A-Za-z\s]+$/.test(value) ? null : 'Name can only consistent of Letters and spaces',
-      gender: (value) => (genderOptions.includes(value) ? null : 'Invalid gender option'),
+      gender: (value) =>
+        genderOptions.map((data) => data.value).includes(value) ? null : 'Invalid gender option',
       hoursSlept: (value) => {
         if (value === null) {
           return 'Hours slept is required';

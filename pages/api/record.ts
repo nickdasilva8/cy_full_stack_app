@@ -57,6 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let user: User | null = null;
 
   let uniqueConstraintViolation = false;
+
   /**
    * attempt to create a new user in the database
    * TODO:: This could be turned into a function in a client file and imported here
@@ -71,6 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err: any) {
     // P2002 is the Prisma error code for unique constraint violation
     if (err?.code !== 'P2002') {
+      console.error(req.body, err, { name, gender, hoursSlept, genderId });
       return res
         .status(500)
         .json({ error: { message: 'An error occurred while inserting the user.' } });
@@ -92,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (err) {
       return res
         .status(500)
-        .json({ error: { message: 'An error occurred while inserting the user.' } });
+        .json({ error: { message: 'An error occurred while finding the user.' } });
     }
   }
 
@@ -119,6 +121,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json(newSleepRecord);
   } catch (err) {
+    console.error(req.body, err);
     // you'd log errors here, but for now, just return a generic error message
     return res
       .status(500)
