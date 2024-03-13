@@ -65,9 +65,12 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
+
+      // TODO:: clear the form here
     } catch (err) {
       // TODO:: you probably want to render an error message to the user
     }
+
     setIsLoading(false);
   };
 
