@@ -1,8 +1,18 @@
-import { Title } from '@mantine/core';
+import { Title, Text } from '@mantine/core';
 import classes from './Welcome.module.css';
 
 export const Welcome: React.FunctionComponent = () => (
-  <Title className={classes.title} ta="center" mt={100}>
-    Cy&apos;s sleep tracking app!
-  </Title>
+  <div>
+    <Title className={classes.title} ta="center" mt={50} mb="lg">
+      Cy&apos;s sleep tracking app!
+    </Title>
+    <div className={classes.links}>
+      <Text component="a" href="/">
+        Submit a new record
+      </Text>
+      <Text ml="lg" component="a" href="/logs">
+        Review existing records
+      </Text>
+    </div>
+  </div>
 );
