@@ -8,3 +8,13 @@
     font-size: rem(26px);
   }
 }
+
+.links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  & a:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,9 +1,21 @@
 # Cy fullstack app
 
 ### Run locally:
-1 - `npm install`
-2 - `npm run dev`
-3 - follow terminal instructions to required port
+
+I used node 18 when building this locally.
+
+- `npm install`
+- in `.env`, set the following:
+  ```bash
+    DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@localhost:5432/cy_local_db"
+  ```
+- `docker-compose up`
+  - spins up a postgres DB in a container
+- `npx prisma migrate dev`
+  - This will setup the tables in the DB you're running with docker-compose.
+- `npx prisma db seed`
+  - This will seed the gender data into the DB
+- `npm run dev`
 
 ## npm scripts
 
@@ -29,6 +41,6 @@
 - `storybook:build` – build production storybook bundle to `storybook-static`
 - `prettier:write` – formats all files with Prettier
 
-
 ### other info:
+
 - boilerplate based on https://github.com/mantinedev/next-app-template
