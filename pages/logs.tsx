@@ -24,7 +24,7 @@ export default function HomePage({
   return (
     <>
       <Header>
-        <Welcome />
+        <Welcome isNewRecord={false} isExistingRecords />
       </Header>
       <main>
         <Container>
