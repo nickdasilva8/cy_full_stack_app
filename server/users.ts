@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import prisma from '@/db-client/prisma';
 import { GenderID } from '@/utils/enum';
 
@@ -55,11 +56,13 @@ export const createSleepRecord = async ({
   hoursSlept: number;
   date: Date;
 }): Promise<SleepRecordBase> => {
+  const formattedDate = format(new Date(date), 'yyyy-MM-dd');
+
   const newSleepRecord: SleepRecordBase = await prisma.sleepRecord.create({
     data: {
       user_id: userId,
       duration: hoursSlept,
-      date,
+      date: formattedDate,
     },
   });
 
