@@ -37,7 +37,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       gender: (value) =>
         genderOptions.map((data) => data.value).includes(value) ? null : 'Invalid gender option',
       hoursSlept: (value) => {
-        if (value === null) {
+        if (!value) {
           return 'Hours slept is required';
         }
         if (value >= 0 && value <= 24) {
