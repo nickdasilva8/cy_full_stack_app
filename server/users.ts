@@ -19,7 +19,7 @@ export const createUser = async ({
 }): Promise<UserBaseWithDate> => {
   const user: UserBaseWithDate = await prisma.user.create({
     data: {
-      name,
+      name: name.toLowerCase(),
       gender_id: genderId,
     },
   });
@@ -35,7 +35,7 @@ export const createUser = async ({
 export const getUserByName = async (name: string): Promise<UserBaseWithDate | null> => {
   const user: UserBaseWithDate | null = await prisma.user.findFirst({
     where: {
-      name,
+      name: name.toLowerCase(),
     },
   });
 
