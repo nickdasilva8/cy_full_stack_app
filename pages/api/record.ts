@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { User } from '@prisma/client';
+
+import { createUser, getUserByName, createSleepRecord } from '@/server/users';
 import { sleepRecordSchema } from '@/utils/schema';
-import prisma from '@/db-client/prisma';
 import { GenderID } from '@/utils/enum';
+import { UserBaseWithDate } from '@/utils/types';
 
 /**
  * - It first checks if the incoming request is a POST request.
@@ -53,26 +54,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // it's safe to parse this as zod has already validated it
   const genderId = parseInt(GenderID[gender as unknown as number], 10);
-
-  let user: User | null = null;
-
+  let user: UserBaseWithDate | null = null;
   let uniqueConstraintViolation = false;
 
-  /**
-   * attempt to create a new user in the database
-   * TODO:: This could be turned into a function in a client file and imported here
-   */
+  // attempt to create a new user in the database
   try {
-    user = await prisma.user.create({
-      data: {
-        name,
-        gender_id: genderId,
-      },
-    });
+    user = await createUser({ name, genderId });
   } catch (err: any) {
     // P2002 is the Prisma error code for unique constraint violation
     if (err?.code !== 'P2002') {
-      console.error(req.body, err, { name, gender, hoursSlept, genderId });
+      // log trivial here
       return res
         .status(500)
         .json({ error: { message: 'An error occurred while inserting the user.' } });
@@ -81,17 +72,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (uniqueConstraintViolation) {
-    /**
-     * attempt to select the existing user from the database
-     * TODO:: This could be turned into a function in a client file and imported here
-     */
+    // attempt to select the existing user from the database
     try {
-      user = await prisma.user.findFirst({
-        where: {
-          name,
-        },
-      });
+      user = await getUserByName(name);
     } catch (err) {
+      // log error here
       return res
         .status(500)
         .json({ error: { message: 'An error occurred while finding the user.' } });
@@ -111,12 +96,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    */
   try {
     // Insert a new sleep record for the user
-    const newSleepRecord = await prisma.sleepRecord.create({
-      data: {
-        user_id: user.id, // Link the sleep record to the user
-        duration: hoursSlept,
-        date: new Date(),
-      },
+    const newSleepRecord = await createSleepRecord({
+      userId: user.id,
+      hoursSlept,
+      date: new Date(),
     });
 
     return res.status(200).json(newSleepRecord);

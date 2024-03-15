@@ -1,9 +1,15 @@
 import { render, screen } from '@/test-utils';
-import { Welcome } from './Table';
+import { Table } from './Table';
+import { exampleUsers } from './Table.story';
 
 describe('Welcome component', () => {
   it('Welcome component rendered the expected message', () => {
-    render(<Welcome />);
-    expect(screen.getByText("Cy's sleep tracking app!")).toBeInTheDocument();
+    render(<Table users={exampleUsers} />);
+    expect(screen.getByText('nick')).toBeInTheDocument();
+    expect(screen.getByText('Male')).toBeInTheDocument();
+    expect(screen.getByText('12')).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Gender')).toBeInTheDocument();
+    expect(screen.getByText('Total sleep records')).toBeInTheDocument();
   });
 });

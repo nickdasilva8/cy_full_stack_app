@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <Header>
-        <Welcome />
+        <Welcome isNewRecord isExistingRecords={false} />
       </Header>
       <main>
         <Container>

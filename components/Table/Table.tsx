@@ -3,7 +3,7 @@ import { Table as MantineTable, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import ReactECharts from 'echarts-for-react';
 
-import { User } from '@/server/users';
+import { User } from '@/utils/types';
 
 import classes from './Table.module.css';
 
@@ -12,8 +12,8 @@ type TableProps = {
 };
 
 export const Table: React.FunctionComponent<TableProps> = ({ users }): JSX.Element => {
-  const [option, setOption] = useState(null); // state to hold the chart options
-  const [selectedUser, setSelectedUser] = useState(''); // state to hold the chart options
+  const [option, setOption] = useState<unknown>(null); // I don't like unknown here
+  const [selectedUser, setSelectedUser] = useState<string>(''); // state to hold the chart options
   const [opened, { open, close }] = useDisclosure(false);
 
   const rows = users.map((user) => (

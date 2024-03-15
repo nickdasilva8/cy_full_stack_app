@@ -34,7 +34,7 @@ model User {
 model SleepRecord {
   id        Int      @id @default(autoincrement())
   user_id   Int
-  date      DateTime
+  date      String
   duration  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -44,3 +44,31 @@ I used node 18 when building this locally.
 ### other info:
 
 - boilerplate based on https://github.com/mantinedev/next-app-template
+
+---
+
+# Improvements?
+
+### Form
+
+**Date**
+
+- prevent the same user logging multiple logs for the same day
+- let the user select the date they want to log sleep hours again
+- getting the genders from the ENUM would be better than the option array in the UI
+
+### List of records
+
+- would be problematic in real use due to no pagination
+  - would fetch initial page size server side
+  - fetch additional pages as required with something like SWR
+- Could add a filter at the top to bring back results for specific user only
+- Could add page size choice
+- Could add ordering to table
+
+### Database
+
+- the constraint on username alone is bad; nick could be nicholas/nicole/nicola, etc.
+  - there would need to be some abstract way to make them identifiable though; DOB could do it, or something else.
+- Took liberty in standardising names so Nick/nick/nICK/nicK are all treated the same.
+- would want columns for soft delete on relevant tables

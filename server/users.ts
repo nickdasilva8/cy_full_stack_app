@@ -1,32 +1,79 @@
+import { format } from 'date-fns';
 import prisma from '@/db-client/prisma';
+import { GenderID } from '@/utils/enum';
 
-interface UserRaw {
-  Gender: {
-    title: string;
-  };
-  SleepRecord: {
-    id: number;
-    createdAt: Date;
-    updatedAt: Date;
-    duration: number;
-  }[];
-  id: number;
+import { User, UserRaw, UserBaseWithDate, SleepRecordBase } from '@/utils/types';
+
+/**
+ *
+ * @example const user = await createUser({ name, genderId });
+ * @param param { name: string, genderId: GenderID}
+ * @returns Promise<UserBaseWithDate>
+ */
+export const createUser = async ({
+  name,
+  genderId,
+}: {
   name: string;
-  gender_id: number;
-  _count: {
-    SleepRecord: number;
-  };
-}
+  genderId: GenderID;
+}): Promise<UserBaseWithDate> => {
+  const user: UserBaseWithDate = await prisma.user.create({
+    data: {
+      name: name.toLowerCase(),
+      gender_id: genderId,
+    },
+  });
 
-export interface User {
-  SleepRecord: { createdAt: string; updatedAt: string; id: number; duration: number }[];
-  Gender: { title: string };
-  id: number;
-  name: string;
-  gender_id: number;
-  _count: { SleepRecord: number };
-}
+  return user;
+};
 
+/**
+ * @example const user = await getUserByName('John Doe');
+ * @param name string
+ * @returns Promise<UserBaseWithDate | null>
+ */
+export const getUserByName = async (name: string): Promise<UserBaseWithDate | null> => {
+  const user: UserBaseWithDate | null = await prisma.user.findFirst({
+    where: {
+      name: name.toLowerCase(),
+    },
+  });
+
+  return user;
+};
+
+/**
+ * @example const user = await createSleepRecord({ userId, hoursSlept, date });
+ * @param param { userId: number, hoursSlept: number, date: Date }
+ * @returns SleepRecordBase
+ */
+export const createSleepRecord = async ({
+  userId,
+  hoursSlept,
+  date,
+}: {
+  userId: number;
+  hoursSlept: number;
+  date: Date;
+}): Promise<SleepRecordBase> => {
+  const formattedDate = format(new Date(date), 'yyyy-MM-dd');
+
+  const newSleepRecord: SleepRecordBase = await prisma.sleepRecord.create({
+    data: {
+      user_id: userId,
+      duration: hoursSlept,
+      date: formattedDate,
+    },
+  });
+
+  return newSleepRecord;
+};
+
+/**
+ * Get all sleep records for all users
+ * @example const users = await getUsersWithSleepRecordCount();
+ * @returns Promise<User[]>
+ */
 export const getUsersWithSleepRecordCount = async (): Promise<User[]> => {
   const users: UserRaw[] = await prisma.user.findMany({
     select: {
@@ -45,6 +92,14 @@ export const getUsersWithSleepRecordCount = async (): Promise<User[]> => {
           updatedAt: true,
           duration: true,
         },
+        orderBy: [
+          {
+            date: 'asc',
+          },
+          {
+            createdAt: 'asc',
+          },
+        ],
       },
       _count: {
         select: { SleepRecord: true },

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { TextInput, Button, Group, Box, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
@@ -13,6 +12,7 @@ interface FormValues {
 
 export const SleepForm: React.FunctionComponent = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
+  const [forceRerender, setForceRerender] = useState<string>(`${new Date().valueOf()}`);
 
   // this list should retrieved from the database, but that feels out of scope for this example
   const genderOptions = [
@@ -30,7 +30,6 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       hoursSlept: 7, // national average for the UK! if you wanted nothing to be selected, you could use null
     },
 
-    // TODO:: use shared schema from Zod, which would allow for reuse of the schema in the backend
     validate: {
       // TODO:: make this trim the input, to eliminate leading and trailing whitespace
       name: (value) =>
@@ -38,7 +37,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       gender: (value) =>
         genderOptions.map((data) => data.value).includes(value) ? null : 'Invalid gender option',
       hoursSlept: (value) => {
-        if (value === null) {
+        if (!value) {
           return 'Hours slept is required';
         }
         if (value >= 0 && value <= 24) {
@@ -52,6 +51,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
 
   const postData = async (values: FormValues) => {
     setIsLoading(true);
+    const valuesToPost = { ...values, name: values.name.trim() };
 
     try {
       const response = await fetch('/api/record', {
@@ -59,7 +59,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(valuesToPost),
       });
 
       if (!response.ok) {
@@ -67,6 +67,14 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
       }
 
       // TODO:: clear the form here
+      form.reset();
+
+      // this is a questionable work around
+      // but it's a reliable way to force Select to re-render
+      // mantine has some nasty work around with resetting the form
+      // value of the Select component. This works for now, but
+      // it's not ideal and I'd definitely want to fix this ASAP.
+      setForceRerender(`${new Date().valueOf()}`);
     } catch (err) {
       // TODO:: you probably want to render an error message to the user
     }
@@ -86,10 +94,10 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
         />
 
         <Select
+          key={forceRerender}
           mt="md"
           withAsterisk
           label="Your gender"
-          // The Product team would be expected to have validated that these options are appropriate
           data={genderOptions}
           {...form.getInputProps('gender')}
         />
