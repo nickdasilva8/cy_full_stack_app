@@ -51,6 +51,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
 
   const postData = async (values: FormValues) => {
     setIsLoading(true);
+    const valuesToPost = { ...values, name: values.name.trim() };
 
     try {
       const response = await fetch('/api/record', {
@@ -58,7 +59,7 @@ export const SleepForm: React.FunctionComponent = (): JSX.Element => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(valuesToPost),
       });
 
       if (!response.ok) {

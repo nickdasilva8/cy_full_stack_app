@@ -92,6 +92,14 @@ export const getUsersWithSleepRecordCount = async (): Promise<User[]> => {
           updatedAt: true,
           duration: true,
         },
+        orderBy: [
+          {
+            date: 'asc',
+          },
+          {
+            createdAt: 'asc',
+          },
+        ],
       },
       _count: {
         select: { SleepRecord: true },
