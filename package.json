@@ -22,7 +22,8 @@
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest && npm run jest-server",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "pre-condition": "npx prisma migrate dev && npx prisma db seed && npm run test"
   },
   "dependencies": {
     "@mantine/core": "7.6.1",
