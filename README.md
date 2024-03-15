@@ -1,6 +1,18 @@
 # Cy fullstack app
 
-### Run locally:
+## Run in docker container locally
+
+- `docker build -t sleepingapp .`
+- create a `.env` in your project root
+  - in `.env`, set the following:
+    ```bash
+      DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@postgresservice:5432/cy_local_db"
+    ```
+    note the `@[domain]:port` is different between docker container and locally.
+- run `docker-compose -f docker-compose.container.yml up`
+- when the app is done spinning up and running it's tests, it should be available on http://localhost:3000
+
+## Run locally:
 
 I used node 18 when building this locally.
 
@@ -11,14 +23,13 @@ I used node 18 when building this locally.
       DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@localhost:5432/cy_local_db"
     ```
 - `docker-compose up`
-  - spins up a postgres DB in a container
-- `npx prisma migrate dev`
-  - This will setup the tables in the DB you're running with docker-compose.
-- `npx prisma db seed`
-  - This will seed the gender data into the DB
-- `npm run test`
-  - just to make sure
+  - spins up a postgres DB in a container for your local app to connect to
+- `pre-condition`
+  - migrates the DB
+  - Seeds the DB
+  - runs tests
 - `npm run dev`
+- app will be available on http://localhost:3000
 
 ## npm scripts
 
