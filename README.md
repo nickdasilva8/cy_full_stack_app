@@ -5,16 +5,19 @@
 I used node 18 when building this locally.
 
 - `npm install`
-- in `.env`, set the following:
-  ```bash
-    DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@localhost:5432/cy_local_db"
-  ```
+- create a `.env` in your project root
+  - in `.env`, set the following:
+    ```bash
+      DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@localhost:5432/cy_local_db"
+    ```
 - `docker-compose up`
   - spins up a postgres DB in a container
 - `npx prisma migrate dev`
   - This will setup the tables in the DB you're running with docker-compose.
 - `npx prisma db seed`
   - This will seed the gender data into the DB
+- `npm run test`
+  - just to make sure
 - `npm run dev`
 
 ## npm scripts
