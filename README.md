@@ -2,13 +2,13 @@
 
 ## Run in docker container locally
 
-- `docker build -t sleepingapp .`
 - create a `.env` in your project root
   - in `.env`, set the following:
     ```bash
       DATABASE_URL="postgresql://cy_local_db_user:cy_local_db_pass@postgresservice:5432/cy_local_db"
     ```
     note the `@[domain]:port` is different between docker container and locally.
+- `docker build -t sleepingapp .`
 - run `docker-compose -f docker-compose.container.yml up`
 - when the app is done spinning up and running it's tests, it should be available on http://localhost:3000
 
